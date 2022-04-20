@@ -10,15 +10,14 @@ import javax.swing.JButton;
 
 public class KnightsTour {
     static HashMap<Integer, JButton> ButtonArray = new HashMap<Integer, JButton>();
-
     static int operationNeighRowList[] = {2, 1, -1, -2, -2, -1, 1, 2};
     static int operationNeighColList[] = {1, 2, 2, 1, -1, -2, -2, -1};
-
     static List<Integer> neighPosition = new ArrayList<Integer>();
+    static List<Integer> visitedPosition = new ArrayList<Integer>();
 
     static KnightsTourGUI window = new KnightsTourGUI();
+    static boolean isPicking = false;
     public static void main(String[] args) {
-       
         window.frame.setVisible(true);
 
         window.generateButton.addMouseListener(new MouseAdapter() {
@@ -36,7 +35,7 @@ public class KnightsTour {
                         @Override
                         public void mouseReleased(MouseEvent e) {
                             JButton button = (JButton) e.getSource();
-                            beginKnightsTour(button);
+                            buttonManager(button);
                         }
                     });
                     ButtonArray.put(concat(i,j), btn);
@@ -48,7 +47,7 @@ public class KnightsTour {
                             @Override
                             public void mouseReleased(MouseEvent e) {
                                 JButton button = (JButton) e.getSource();
-                                beginKnightsTour(button);
+                                buttonManager(button);
                             }
                         });
                         ButtonArray.put(concat(i,j), btn2);
@@ -77,7 +76,6 @@ public class KnightsTour {
     }
 
     static public void beginKnightsTour(JButton btn) {
-        findNeighbors(btn);
     }
 
     static public void findNeighbors(JButton btn) {
@@ -90,7 +88,7 @@ public class KnightsTour {
             int tempAnswerCol = Integer.parseInt(parts[1]) + operationNeighColList[i];
             
             //Check if the neighbor is in the board
-            if (tempAnswerRow >= 0 && tempAnswerRow <= window.rows - 1 && tempAnswerCol >= 0 && tempAnswerCol <= window.cols - 1) {
+            if (tempAnswerRow >= 0 && tempAnswerRow <= window.rows - 1 && tempAnswerCol >= 0 && tempAnswerCol <= window.cols - 1 && !visitedPosition.contains(concat(tempAnswerRow, tempAnswerCol))) {
                 neighPosition.add(concat(tempAnswerRow, tempAnswerCol));
             }
         }
@@ -99,6 +97,36 @@ public class KnightsTour {
         for (int i = 0; i < neighPosition.size(); i++) {
             JButton button = ButtonArray.get(neighPosition.get(i));
             button.setBackground(Color.GREEN);
+        }
+        isPicking = true;
+    }
+
+    static public void resetButtonState() {
+        for (int i = 0; i < neighPosition.size(); i++) {
+            JButton button = ButtonArray.get(neighPosition.get(i));
+            button.setBackground(null);
+        }
+
+        isPicking = false;
+        neighPosition.clear();
+    }
+
+    static public void buttonManager(JButton btn) {
+        if (!visitedPosition.contains(Integer.parseInt(btn.getText()))) {
+            if (isPicking == true) {
+                if (neighPosition.contains(Integer.parseInt(btn.getText()))) {
+                    visitedPosition.add(Integer.parseInt(btn.getText()));
+                    btn.setBackground(Color.RED);
+                    neighPosition.remove(neighPosition.indexOf(Integer.parseInt(btn.getText())));
+     
+                    resetButtonState();
+                    findNeighbors(btn);
+                }
+            } else if (isPicking == false && visitedPosition.isEmpty()) {
+                btn.setBackground(Color.RED);
+                visitedPosition.add(Integer.parseInt(btn.getText()));
+                findNeighbors(btn);
+            } 
         }
     }
 }
