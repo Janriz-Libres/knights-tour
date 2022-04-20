@@ -59,7 +59,6 @@ public class KnightsTour {
 
     static int concat(int a, int b)
     {
- 
         // Convert both the integers to string
         String s1 = Integer.toString(a);
         String s2 = Integer.toString(b);
@@ -98,7 +97,6 @@ public class KnightsTour {
             JButton button = ButtonArray.get(neighPosition.get(i));
             button.setBackground(Color.GREEN);
         }
-        isPicking = true;
     }
 
     static public void resetButtonState() {
@@ -107,26 +105,24 @@ public class KnightsTour {
             button.setBackground(null);
         }
 
-        isPicking = false;
         neighPosition.clear();
     }
 
     static public void buttonManager(JButton btn) {
         if (!visitedPosition.contains(Integer.parseInt(btn.getText()))) {
-            if (isPicking == true) {
-                if (neighPosition.contains(Integer.parseInt(btn.getText()))) {
-                    visitedPosition.add(Integer.parseInt(btn.getText()));
-                    btn.setBackground(Color.RED);
-                    neighPosition.remove(neighPosition.indexOf(Integer.parseInt(btn.getText())));
-     
-                    resetButtonState();
-                    findNeighbors(btn);
-                }
-            } else if (isPicking == false && visitedPosition.isEmpty()) {
+            if (visitedPosition.isEmpty()) {
                 btn.setBackground(Color.RED);
                 visitedPosition.add(Integer.parseInt(btn.getText()));
                 findNeighbors(btn);
-            } 
+            } else if (neighPosition.contains(Integer.parseInt(btn.getText()))) {
+                visitedPosition.add(Integer.parseInt(btn.getText()));
+                btn.setBackground(Color.RED);
+                neighPosition.remove(neighPosition.indexOf(Integer.parseInt(btn.getText())));
+     
+                resetButtonState();
+                findNeighbors(btn);
+            }
+            
         }
     }
 }
