@@ -13,6 +13,7 @@ public class KnightsTour {
     static int operationNeighRowList[] = {2, 1, -1, -2, -2, -1, 1, 2};
     static int operationNeighColList[] = {1, 2, 2, 1, -1, -2, -2, -1};
     static List<Integer> neighPosition = new ArrayList<Integer>();
+    static List<Integer> neighPositionCPUFormat = new ArrayList<Integer>();
     static List<Integer> visitedPosition = new ArrayList<Integer>();
 
     static KnightsTourGUI window = new KnightsTourGUI();
@@ -89,6 +90,9 @@ public class KnightsTour {
             //Check if the neighbor is in the board
             if (tempAnswerRow >= 0 && tempAnswerRow <= window.rows - 1 && tempAnswerCol >= 0 && tempAnswerCol <= window.cols - 1 && !visitedPosition.contains(concat(tempAnswerRow, tempAnswerCol))) {
                 neighPosition.add(concat(tempAnswerRow, tempAnswerCol));
+                neighPositionCPUFormat.add(concat(tempAnswerRow, tempAnswerCol));
+            } else {
+                neighPositionCPUFormat.add(null);
             }
         }
 
@@ -122,7 +126,6 @@ public class KnightsTour {
                 resetButtonState();
                 findNeighbors(btn);
             }
-            
         }
     }
 }
