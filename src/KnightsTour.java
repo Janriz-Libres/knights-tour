@@ -100,6 +100,7 @@ public class KnightsTour {
         for (int i = 0; i < neighPosition.size(); i++) {
             JButton button = ButtonArray.get(neighPosition.get(i));
             button.setBackground(Color.GREEN);
+            System.out.println("Hello!");
         }
     }
 
