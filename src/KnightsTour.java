@@ -59,17 +59,12 @@ public class KnightsTour {
     }
 
     static public void findNeighbors(JButton btn) {
-        DecimalFormat formatter = new DecimalFormat("00");
-        
-        String btnKey = formatter.format(getKeyByValue(ButtonArray, btn)); 
-        System.out.println("Evaluating Position: " + btnKey);
-        String[] parts = btnKey.split("");
+        System.out.println("Evaluating Position: " + getKeyByValue(btn));
+        String[] parts = getKeyByValue(btn).split("");
 
         //Generate neighbor position
         for (int i = 0; i < operationNeighRowList.length; i++) {
             System.out.println("Solving position " + i + " neighbour...");
-            System.out.println("String index 0:" + parts[0]);
-            System.out.println("String index 1:" + parts[1]);
             int tempAnswerRow = Integer.parseInt(parts[0]) + operationNeighRowList[i];
             int tempAnswerCol = Integer.parseInt(parts[1]) + operationNeighColList[i];
             
@@ -97,18 +92,20 @@ public class KnightsTour {
         }
 
         neighPosition.clear();
+        neighPositionCPUFormat.clear();
     }
 
     static public void buttonManager(JButton btn) {
-        if (!visitedPosition.contains(Integer.parseInt(btn.getText()))) {
+        int currentChosenButton = Integer.parseInt(getKeyByValue(btn));
+        if (!visitedPosition.contains(currentChosenButton)) {
             if (visitedPosition.isEmpty()) {
                 btn.setBackground(Color.RED);
-                visitedPosition.add(Integer.parseInt(btn.getText()));
+                visitedPosition.add(currentChosenButton);
                 findNeighbors(btn);
-            } else if (neighPosition.contains(Integer.parseInt(btn.getText()))) {
-                visitedPosition.add(Integer.parseInt(btn.getText()));
+            } else if (neighPosition.contains(currentChosenButton)) {
+                visitedPosition.add(currentChosenButton);
                 btn.setBackground(Color.RED);
-                neighPosition.remove(neighPosition.indexOf(Integer.parseInt(btn.getText())));
+                neighPosition.remove(neighPosition.indexOf(currentChosenButton));
      
                 resetButtonState();
                 findNeighbors(btn);
@@ -130,10 +127,13 @@ public class KnightsTour {
         ButtonArray.put(concat(i,j), btn);
     }
 
-    public static <T, E> T getKeyByValue(Map<T, E> map, E value) {
-        for (Entry<T, E> entry : map.entrySet()) {
-            if (Objects.equals(value, entry.getValue())) {
-                return entry.getKey();
+    //Getting the key by value of Hashmap ButtonArray
+    public static String getKeyByValue(JButton btn) {
+        DecimalFormat formatter = new DecimalFormat("00");
+       
+        for (Entry<Integer, JButton> entry : ButtonArray.entrySet()) {
+            if (Objects.equals(btn, entry.getValue())) {
+                return formatter.format(entry.getKey());
             }
         }
         return null;
