@@ -1,10 +1,9 @@
 package src;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import java.awt.GridLayout;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 
 public class KnightsTourGUI extends JFrame {
