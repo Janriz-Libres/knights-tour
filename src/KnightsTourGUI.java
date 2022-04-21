@@ -9,8 +9,6 @@ import javax.swing.JTextField;
 
 public class KnightsTourGUI extends JFrame {
     JFrame frame;
-	JTextField ChessSizeInput;
-	JButton generateButton;
 	JPanel buttonPanel;
 	int rows, cols = 1;
 
@@ -19,23 +17,28 @@ public class KnightsTourGUI extends JFrame {
 	}
 
     private void initialize() {
+		//Frame
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(new GridLayout(4, 0, 0, 0));
-		
-		JLabel InputChessSizeLabel = new JLabel("Input Chess Board Size:");
-		frame.getContentPane().add(InputChessSizeLabel);
-		
-		ChessSizeInput = new JTextField();
-		frame.getContentPane().add(ChessSizeInput);
-		ChessSizeInput.setColumns(10);
-		
-		generateButton = new JButton("Generate");
-		frame.getContentPane().add(generateButton);
+		frame.getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
+	
 
+		//Button Panel
 		buttonPanel = new JPanel();
 		frame.getContentPane().add(buttonPanel);
 		buttonPanel.setLayout(new GridLayout(8, 8, 0, 0));
+	}
+
+	private void buttonDesign(JButton btn) {
+		//Change the design of the buttons in the chess board using the variable "btn"
+	}
+
+	//Applying the button design to all buttons from buttonDesign()
+	public void applyButtonDesign() {
+		for (int i = 0; i < KnightsTour.ButtonArray.size(); i++) {
+			JButton btn = KnightsTour.ButtonArray.get(i);
+			buttonDesign(btn);
+		}
 	}
 }
