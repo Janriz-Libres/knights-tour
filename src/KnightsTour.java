@@ -1,33 +1,29 @@
 package src;
 
-import java.awt.event.*;
 import java.awt.Color;
-import javax.swing.JButton;
-import javax.swing.SwingUtilities;
-
+import java.awt.event.*;
+import javax.swing.*;
 import java.util.*;
 
 public class KnightsTour {
     static final int BOARD_SIZE = 8;
     static final int HORSE_MOVES = 8;
 
-    static Cell cellArray[][] = new Cell[BOARD_SIZE][BOARD_SIZE];
+    static Cell cellArray[][] = new Cell[KnightsTour.BOARD_SIZE][KnightsTour.BOARD_SIZE];
     static int moveOffsets[][] = {
         {-2, 1}, {-1, 2}, {1, 2}, {2, 1}, {2, -1}, {1, -2}, {-1, -2}, {-2, -1}
     };
     static List<Cell> neighborCells = new ArrayList<Cell>();
-    // static List<Cell> neighborCellsCPUFormat = new ArrayList<Cell>();
-
-    static Cell currentCell = null;
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new KnightsTourGUI());
     }
 
     static public void beginKnightsTour(JButton btn) {
+        // TODO
     }
 
-    static public void generateButtons(KnightsTourGUI window) {
+    static public void generateButtons(KnightsTourGUI frame) {
         for (int row = 0; row < KnightsTour.BOARD_SIZE; row++) {
             for (int col = 0; col < KnightsTour.BOARD_SIZE; col++) {
                 Cell btn = new Cell(String.valueOf(row) + String.valueOf(col));
@@ -41,7 +37,7 @@ public class KnightsTour {
                 });
 
                 cellArray[row][col] = btn;
-                window.buttonPanel.add(btn);
+                frame.buttonPanel.add(btn);
             }
         }
     }
@@ -66,22 +62,12 @@ public class KnightsTour {
 
                 if (!tempBtn.isVisited())
                     neighborCells.add(tempBtn);
-
-                // if (!tempBtn.isVisited()) {
-                //     neighborCells.add(tempBtn);
-                //     neighborCellsCPUFormat.add(tempBtn);
-                // } else {
-                //     neighborCellsCPUFormat.add(null);
-                // }
             }
         }
 
         // Set color of the neighbor
         for (int i = 0; i < neighborCells.size(); i++)
             neighborCells.get(i).setBackground(Color.GREEN);
-
-        // System.out.println("Solved Neighbors: " +
-        // Arrays.toString(neighborCellsCPUFormat.toArray()));
     }
 
     static public void resetButtonState() {
