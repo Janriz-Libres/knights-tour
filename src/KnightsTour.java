@@ -1,141 +1,109 @@
 package src;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Map.Entry;
-import java.awt.Color;
 
+import java.awt.event.*;
+import java.awt.Color;
 import javax.swing.JButton;
+import javax.swing.SwingUtilities;
+
+import java.util.*;
 
 public class KnightsTour {
-    static HashMap<Integer, JButton> ButtonArray = new HashMap<Integer, JButton>();
-    static int operationNeighRowList[] = {-2,-1,1,2,2,1,-1,-2};
-    static int operationNeighColList[] = {1,2,2,1,-1,-2,-2,-1};
-    static List<Integer> neighPosition = new ArrayList<Integer>();
-    static List<Integer> neighPositionCPUFormat = new ArrayList<Integer>();
-    static List<Integer> visitedPosition = new ArrayList<Integer>();
+    static final int BOARD_SIZE = 8;
+    static final int HORSE_MOVES = 8;
 
-    static KnightsTourGUI window = new KnightsTourGUI();
-    static boolean isPicking = false;
+    static Cell cellArray[][] = new Cell[BOARD_SIZE][BOARD_SIZE];
+    static int moveOffsets[][] = {
+        {-2, 1}, {-1, 2}, {1, 2}, {2, 1}, {2, -1}, {1, -2}, {-1, -2}, {-2, -1}
+    };
+    static List<Cell> neighborCells = new ArrayList<Cell>();
+    // static List<Cell> neighborCellsCPUFormat = new ArrayList<Cell>();
+
+    static Cell currentCell = null;
+
     public static void main(String[] args) {
-        window.frame.setVisible(true);
-
-        //Generate 8x8 buttons and apply the button design
-        for (int i = 0, j; i <= 7; i++) {
-            j = 0;
-            generateButtons(i, j);
-            for (int k = 1; k <= 7; k++) {
-                j++;
-                generateButtons(i, j);
-            }
-        }
-        window.applyButtonDesign();
-    }
-
-    static int concat(int a, int b)
-    {
-        // Convert both the integers to string
-        String s1 = Integer.toString(Math.abs(a));
-        String s2 = Integer.toString(Math.abs(b));
- 
-        // Concatenate both strings
-        String s = s1 + s2;
- 
-        // Convert the concatenated string
-        // to integer
-        int c = Integer.parseInt(s);
-        
-        // return the formed integer
-        return c;
+        SwingUtilities.invokeLater(() -> new KnightsTourGUI());
     }
 
     static public void beginKnightsTour(JButton btn) {
     }
 
-    static public void findNeighbors(JButton btn) {
-        DecimalFormat formatter = new DecimalFormat("00");
-        
-        String btnKey = formatter.format(getKeyByValue(ButtonArray, btn)); 
-        System.out.println("Evaluating Position: " + btnKey);
-        String[] parts = btnKey.split("");
+    static public void generateButtons(KnightsTourGUI window) {
+        for (int row = 0; row < KnightsTour.BOARD_SIZE; row++) {
+            for (int col = 0; col < KnightsTour.BOARD_SIZE; col++) {
+                Cell btn = new Cell(String.valueOf(row) + String.valueOf(col));
 
-        //Generate neighbor position
-        for (int i = 0; i < operationNeighRowList.length; i++) {
+                btn.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+                        Cell button = (Cell) e.getComponent();
+                        buttonManager(button);
+                    }
+                });
+
+                cellArray[row][col] = btn;
+                window.buttonPanel.add(btn);
+            }
+        }
+    }
+
+    static public void findNeighbors(Cell btn) {
+        String pos = btn.getPos();
+        System.out.println("Evaluating Position: " + pos);
+        String[] parts = pos.split("");
+
+        // Generate neighbor position
+        for (int i = 0; i < HORSE_MOVES; i++) {
             System.out.println("Solving position " + i + " neighbour...");
             System.out.println("String index 0:" + parts[0]);
             System.out.println("String index 1:" + parts[1]);
-            int tempAnswerRow = Integer.parseInt(parts[0]) + operationNeighRowList[i];
-            int tempAnswerCol = Integer.parseInt(parts[1]) + operationNeighColList[i];
-            
-            //Check if the neighbor is in the board
-            if (tempAnswerRow >= 0 & tempAnswerRow <= 7 & tempAnswerCol >= 0 & tempAnswerCol <= 7 & !visitedPosition.contains(concat(tempAnswerRow, tempAnswerCol))) {
-                neighPosition.add(concat(tempAnswerRow, tempAnswerCol));
-                neighPositionCPUFormat.add(concat(tempAnswerRow, tempAnswerCol));
-            } else {
-                neighPositionCPUFormat.add(null);
+
+            int row = Integer.parseInt(parts[0]) + moveOffsets[i][0];
+            int col = Integer.parseInt(parts[1]) + moveOffsets[i][1];
+
+            // Check if the neighbor is in the board
+            if (row >= 0 & row < BOARD_SIZE & col >= 0 & col < BOARD_SIZE) {
+                Cell tempBtn = cellArray[row][col];
+
+                if (!tempBtn.isVisited())
+                    neighborCells.add(tempBtn);
+
+                // if (!tempBtn.isVisited()) {
+                //     neighborCells.add(tempBtn);
+                //     neighborCellsCPUFormat.add(tempBtn);
+                // } else {
+                //     neighborCellsCPUFormat.add(null);
+                // }
             }
         }
 
-        //Set color of the neighbor
-        for (int i = 0; i < neighPosition.size(); i++) {
-            JButton button = ButtonArray.get(neighPosition.get(i));
-            button.setBackground(Color.GREEN);
-        }
-        System.out.println("Solved Neighbors: " + Arrays.toString(neighPositionCPUFormat.toArray()));
+        // Set color of the neighbor
+        for (int i = 0; i < neighborCells.size(); i++)
+            neighborCells.get(i).setBackground(Color.GREEN);
+
+        // System.out.println("Solved Neighbors: " +
+        // Arrays.toString(neighborCellsCPUFormat.toArray()));
     }
 
     static public void resetButtonState() {
-        for (int i = 0; i < neighPosition.size(); i++) {
-            JButton button = ButtonArray.get(neighPosition.get(i));
+        for (int i = 0; i < neighborCells.size(); i++) {
+            Cell button = neighborCells.get(i);
             button.setBackground(null);
         }
 
-        neighPosition.clear();
+        neighborCells.clear();
     }
 
-    static public void buttonManager(JButton btn) {
-        if (!visitedPosition.contains(Integer.parseInt(btn.getText()))) {
-            if (visitedPosition.isEmpty()) {
-                btn.setBackground(Color.RED);
-                visitedPosition.add(Integer.parseInt(btn.getText()));
-                findNeighbors(btn);
-            } else if (neighPosition.contains(Integer.parseInt(btn.getText()))) {
-                visitedPosition.add(Integer.parseInt(btn.getText()));
-                btn.setBackground(Color.RED);
-                neighPosition.remove(neighPosition.indexOf(Integer.parseInt(btn.getText())));
-     
+    static public void buttonManager(Cell btn) {
+        if (btn.isVisited())
+            return;
+
+        if (neighborCells.contains(btn) || neighborCells.isEmpty()) {
+            if (!neighborCells.isEmpty())
                 resetButtonState();
-                findNeighbors(btn);
-            }
+
+            btn.setBackground(Color.RED);
+            btn.setVisited(true);
+            findNeighbors(btn);
         }
-    }
-
-    static public void generateButtons(int i, int j) {
-        JButton btn = new JButton("" + i+j);
-        window.buttonPanel.add(btn);
-        btn.addMouseListener(new MouseAdapter() {
-        @Override
-            public void mouseReleased(MouseEvent e) {
-                JButton button = (JButton) e.getSource();
-                buttonManager(button);
-            }
-        });
-
-        ButtonArray.put(concat(i,j), btn);
-    }
-
-    public static <T, E> T getKeyByValue(Map<T, E> map, E value) {
-        for (Entry<T, E> entry : map.entrySet()) {
-            if (Objects.equals(value, entry.getValue())) {
-                return entry.getKey();
-            }
-        }
-        return null;
     }
 }

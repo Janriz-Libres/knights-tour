@@ -1,33 +1,27 @@
 package src;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import java.awt.GridLayout;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
 
+import java.awt.*;
+import javax.swing.*;
 
 public class KnightsTourGUI extends JFrame {
-    JFrame frame;
 	JPanel buttonPanel;
-	int rows, cols = 1;
 
 	public KnightsTourGUI() {
-		initialize();
-	}
-
-    private void initialize() {
-		//Frame
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
+		setLayout(new GridLayout(1, 0, 0, 0));
 	
-
 		//Button Panel
 		buttonPanel = new JPanel();
-		frame.getContentPane().add(buttonPanel);
+		add(buttonPanel);
 		buttonPanel.setLayout(new GridLayout(8, 8, 0, 0));
+
+		KnightsTour.generateButtons(this);
+		applyButtonDesign();
+
+		setBounds(100, 100, 600, 400);
+		setMinimumSize(new Dimension(600, 400));
+		setLocationRelativeTo(null);
+		setVisible(true);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 	private void buttonDesign(JButton btn) {
@@ -36,9 +30,11 @@ public class KnightsTourGUI extends JFrame {
 
 	//Applying the button design to all buttons from buttonDesign()
 	public void applyButtonDesign() {
-		for (int i = 0; i < KnightsTour.ButtonArray.size(); i++) {
-			JButton btn = KnightsTour.ButtonArray.get(i);
-			buttonDesign(btn);
+		for (int i = 0; i < KnightsTour.BOARD_SIZE; i++) {
+			for (int j = 0; j < KnightsTour.BOARD_SIZE; j++) {
+				JButton btn = KnightsTour.cellArray[i][j];
+				buttonDesign(btn);
+			}
 		}
 	}
 }
