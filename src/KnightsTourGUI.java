@@ -6,20 +6,23 @@ import javax.swing.*;
 public class KnightsTourGUI extends JFrame {
 	JPanel buttonPanel;
 
+	/**
+	 * Generates the application window/frame
+	 */
 	public KnightsTourGUI() {
 		buttonPanel = new JPanel(new GridLayout(KnightsTour.BOARD_SIZE, KnightsTour.BOARD_SIZE));
 		add(buttonPanel);
 
 		KnightsTour.generateButtons(this);
 
-		setMinimumSize(new Dimension(600, 400));
+		setMinimumSize(new Dimension(450, 300));
 		setLocationRelativeTo(null);
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 	/**
-	 * Change the design of the buttons in the chess board here.
+	 * A function made for the purpose of designing the cells on the chessboard
 	 * 
 	 * @param btn the button to be designed
 	 */
