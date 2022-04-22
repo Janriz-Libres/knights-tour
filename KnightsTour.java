@@ -8,7 +8,7 @@ public class KnightsTour {
     static final int KNIGHT_MOVES = 8;
 
     // Holds all references of each cell/square on the chessboard
-    static Cell cellArray[][] = new Cell[KnightsTour.BOARD_SIZE][KnightsTour.BOARD_SIZE];
+    static Cell cellArray[][] = new Cell[BOARD_SIZE][BOARD_SIZE];
 
     // Stores the knight's movements relative to its origin
     static int moveOffsets[][] = {
