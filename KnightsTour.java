@@ -1,4 +1,3 @@
-import java.awt.Color;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.*;
@@ -39,7 +38,6 @@ public class KnightsTour {
             for (int col = 0; col < BOARD_SIZE; col++) {
                 // Instantiates a new cell and stores its location via constructor
                 Cell btn = new Cell(String.valueOf(row) + String.valueOf(col));
-                btn.setBackground(new java.awt.Color(229,223,214));
 
                 // Adds a mouseListener that will trigger if the user clicks on any of the cells
                 btn.addMouseListener(new MouseAdapter() {
@@ -51,7 +49,7 @@ public class KnightsTour {
                 });
 
                 // Decorates the button accordingly
-                frame.applyButtonDesign(btn);
+                KnightsTourGUI.designBtn(btn);
 
                 // Store a reference of the cell and add it as component
                 cellArray[row][col] = btn;
@@ -79,7 +77,7 @@ public class KnightsTour {
         }
 
         // Update the position of the knight on the chessboard and mark the cell it is on as visited
-        btn.setBackground(new java.awt.Color(84,68,50));
+        KnightsTourGUI.designCurrentCell(btn);
         btn.setVisited(true);
         
         // Keep track of the knight's new position and proceed to find neighbor cells (valid moves)
@@ -130,7 +128,7 @@ public class KnightsTour {
                 // If button is not visited, add it to the list of neighbors and set its color
                 if (!button.isVisited()) {
                     neighborCells.add(button);
-                    button.setBackground(new java.awt.Color(180,160,126));
+                    KnightsTourGUI.designNeighbor(button);
                 }
             }
         }

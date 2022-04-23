@@ -22,9 +22,27 @@ public class KnightsTourGUI extends JFrame {
 	/**
 	 * A function made for the purpose of designing the cells on the chessboard
 	 * 
-	 * @param btn the button to be designed
+	 * @param btn the general cell/button to be designed
 	 */
-	public void applyButtonDesign(JButton btn) {
-		// TODO
+	static void designBtn(JButton btn) {
+		btn.setBackground(new Color(229,223,214));
+	}
+
+	/**
+	 * Decorates or designs the cell that is the current position of the knight
+	 * 
+	 * @param btn the current position or cell of the knight
+	 */
+	static void designCurrentCell(JButton btn) {
+		btn.setBackground(new Color(84,68,50));
+	}
+
+	/**
+	 * Decorates buttons which are valid neighbors or moves
+	 * 
+	 * @param btn a valid neighbor cell/button to be designed
+	 */
+	static void designNeighbor(JButton btn) {
+		btn.setBackground(new Color(180,160,126));
 	}
 }
