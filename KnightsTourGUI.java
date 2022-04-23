@@ -2,6 +2,10 @@ import java.awt.*;
 import javax.swing.*;
 
 public class KnightsTourGUI extends JFrame {
+	// Holds all references of each cell/square on the chessboard
+	Cell cellArray[][] = new Cell[KnightsTour.BOARD_SIZE][KnightsTour.BOARD_SIZE];
+
+	// Container for all the buttons/cells on the chessboard
 	JPanel buttonPanel;
 
 	/**

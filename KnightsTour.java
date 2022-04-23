@@ -6,8 +6,8 @@ public class KnightsTour {
     static final int BOARD_SIZE = 8;
     static final int KNIGHT_MOVES = 8;
 
-    // Holds all references of each cell/square on the chessboard
-    static Cell cellArray[][] = new Cell[BOARD_SIZE][BOARD_SIZE];
+    // Holds a reference to the GUI frame or window
+    static KnightsTourGUI app;
 
     // Stores the knight's movements relative to its origin
     static int moveOffsets[][] = {
@@ -21,7 +21,9 @@ public class KnightsTour {
     static Cell currentPos;
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new KnightsTourGUI());
+        SwingUtilities.invokeLater(() -> {
+            app = new KnightsTourGUI();
+        });
     }
 
     static public void beginKnightsTour(JButton btn) {
@@ -52,7 +54,7 @@ public class KnightsTour {
                 KnightsTourGUI.designBtn(btn);
 
                 // Store a reference of the cell and add it as component
-                cellArray[row][col] = btn;
+                frame.cellArray[row][col] = btn;
                 frame.buttonPanel.add(btn);
             }
         }
@@ -123,7 +125,7 @@ public class KnightsTour {
 
             // Verify the neighbor's position by checking if it's on the board
             if (tempRow >= 0 & tempRow < BOARD_SIZE & tempCol >= 0 & tempCol < BOARD_SIZE) {
-                Cell button = cellArray[tempRow][tempCol];
+                Cell button = app.cellArray[tempRow][tempCol];
 
                 // If button is not visited, add it to the list of neighbors and set its color
                 if (!button.isVisited()) {
