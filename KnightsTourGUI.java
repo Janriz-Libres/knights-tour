@@ -17,7 +17,7 @@ public class KnightsTourGUI extends JFrame {
 
 		KnightsTour.generateButtons(this);
 
-		setMinimumSize(new Dimension(450, 300));
+		setMinimumSize(new Dimension(400, 400));
 		setLocationRelativeTo(null);
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
