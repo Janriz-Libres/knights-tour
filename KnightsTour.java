@@ -93,7 +93,7 @@ public class KnightsTour {
     static public void resetButtonState() {
         for (int i = 0; i < neighborCells.size(); i++) {
             Cell button = neighborCells.get(i);
-            button.setBackground(new java.awt.Color(229,223,214));
+            KnightsTourGUI.designBtn(button);
         }
 
         neighborCells.clear();
