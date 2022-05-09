@@ -1,3 +1,4 @@
+import java.awt.event.*;
 import java.awt.*;
 import javax.swing.*;
 
@@ -14,6 +15,15 @@ public class KnightsTourGUI extends JFrame {
 	public KnightsTourGUI() {
 		buttonPanel = new JPanel(new GridLayout(KnightsTour.BOARD_SIZE, KnightsTour.BOARD_SIZE));
 		add(buttonPanel);
+
+		JButton autoKnightButton = new JButton("Auto Knight's Tour");
+		add(autoKnightButton, BorderLayout.SOUTH);
+		autoKnightButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				KnightsTour.programState = 1;
+			}
+		});
 
 		KnightsTour.generateButtons(this);
 
