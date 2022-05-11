@@ -20,7 +20,7 @@ public class KnightsTour {
     static int breakPoint = 0;
     static int futNeighCnt = 0;
     static int currIteration = 0;
-    static int animationSPEED = 2000;
+    static int animationSPEED = 500;
 
     // Stores the knight's valid moves
     static List<Cell> neighborCells = new ArrayList<Cell>();
