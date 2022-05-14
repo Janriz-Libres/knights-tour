@@ -1,13 +1,16 @@
-import java.awt.event.*;
+package src;
+
 import javax.swing.*;
 import java.util.*;
+import static src.KnightsTourGUI.*;
 
 public class KnightsTour {
-    static final int BOARD_SIZE = 8;
+    // Set constant attributes
+    public static final int BOARD_SIZE = 8;
     static final int KNIGHT_MOVES = 8;
 
     // Holds a reference to the GUI frame or window
-    static KnightsTourGUI app;
+    public static KnightsTourGUI app;
 
     // Stores the knight's movements relative to its origin
     static int moveOffsets[][] = {
@@ -15,10 +18,15 @@ public class KnightsTour {
     };
 
     // Stores the knight's valid moves
-    static List<Cell> neighborCells = new ArrayList<Cell>();
+    public static List<Cell> neighborCells = new ArrayList<Cell>();
+
+    // Keeps track of visited cells
+    public static List<Cell> visitedCells = new ArrayList<Cell>();
 
     // Keeps track of the knight's current position on the chessboard
-    static Cell currentPos;
+    public static Cell currentPos;
+
+    static StateMachine sm = new StateMachine();
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
@@ -39,52 +47,33 @@ public class KnightsTour {
         for (int row = 0; row < BOARD_SIZE; row++) {
             for (int col = 0; col < BOARD_SIZE; col++) {
                 // Instantiates a new cell and stores its location via constructor
-                Cell btn = new Cell(String.valueOf(row) + String.valueOf(col));
+                Cell btn = new Cell(String.valueOf(col) + String.valueOf(row));
 
                 // Adds a mouseListener that will trigger if the user clicks on any of the cells
-                btn.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseReleased(MouseEvent e) {
-                        Cell button = (Cell) e.getComponent();
-                        processBtnEvent(button);
-                    }
-                });
+                btn.addActionListener(e -> sm.processBtnEvent((Cell) e.getSource()));
 
                 // Decorates the button accordingly
-                KnightsTourGUI.designBtn(btn);
+                designBtn(btn);
 
                 // Store a reference of the cell and add it as component
-                frame.cellArray[row][col] = btn;
-                frame.buttonPanel.add(btn);
+                frame.cellArray[col][row] = btn;
+                frame.chessBoard.add(btn);
             }
         }
     }
 
     /**
-     * Provides the logic for determining if the cell is a valid move/neighbor or not
+     * Moves the knight to the cell/button provided as argument
      * 
-     * @param btn the cell or button that the user has clicked on
+     * @param btn the cell to be occupied by the knight
      */
-    static public void processBtnEvent(Cell btn) {
-        if (btn.isVisited())
-            return;
-
-        // Will only execute if it is not the first time that the user has picked a cell
-        if (currentPos != null) {
-            // If the cell is not a valid move then exit out of the function
-            if (!neighborCells.contains(btn))
-                return;
-            
-            resetButtonState();
-        }
-
-        // Update the position of the knight on the chessboard and mark the cell it is on as visited
-        KnightsTourGUI.designCurrentCell(btn);
+    static public void moveKnight(Cell btn) {
+        designCurrentCell(btn);
         btn.setVisited(true);
+        visitedCells.add(btn);
         
-        // Keep track of the knight's new position and proceed to find neighbor cells (valid moves)
+        // Keep track of the knight's new position
         currentPos = btn;
-        findNeighbors(currentPos);
     }
 
     /**
@@ -130,7 +119,7 @@ public class KnightsTour {
                 // If button is not visited, add it to the list of neighbors and set its color
                 if (!button.isVisited()) {
                     neighborCells.add(button);
-                    KnightsTourGUI.designNeighbor(button);
+                    designNeighbor(button);
                 }
             }
         }

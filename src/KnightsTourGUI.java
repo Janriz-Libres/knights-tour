@@ -1,21 +1,44 @@
+package src;
+
 import java.awt.*;
 import javax.swing.*;
 
+import static src.KnightsTour.BOARD_SIZE;
+import static src.KnightsTour.generateButtons;
+
 public class KnightsTourGUI extends JFrame {
 	// Holds all references of each cell/square on the chessboard
-	Cell cellArray[][] = new Cell[KnightsTour.BOARD_SIZE][KnightsTour.BOARD_SIZE];
+	Cell cellArray[][] = new Cell[BOARD_SIZE][BOARD_SIZE];
 
 	// Container for all the buttons/cells on the chessboard
-	JPanel buttonPanel;
+	JPanel chessBoard;
 
 	/**
 	 * Generates the application window/frame
 	 */
 	public KnightsTourGUI() {
-		buttonPanel = new JPanel(new GridLayout(KnightsTour.BOARD_SIZE, KnightsTour.BOARD_SIZE));
-		add(buttonPanel);
+		chessBoard = new JPanel(new GridLayout(BOARD_SIZE, BOARD_SIZE));
+		
+		JPanel controlPanel = new JPanel(new BorderLayout());
+		JPanel btnPanel = new JPanel();
 
-		KnightsTour.generateButtons(this);
+		JLabel modeLabel = new JLabel("Mode: Manual", SwingConstants.CENTER);
+
+		JButton autoBtn = new JButton("Auto Tour");
+		JButton manualBtn = new JButton("Manual Tour");
+		JButton guidedBtn = new JButton("Guided Tour");
+
+		btnPanel.add(autoBtn);
+		btnPanel.add(manualBtn);
+		btnPanel.add(guidedBtn);
+
+		controlPanel.add(modeLabel, BorderLayout.NORTH);
+		controlPanel.add(btnPanel);
+
+		add(chessBoard);
+		add(controlPanel, BorderLayout.SOUTH);
+
+		generateButtons(this);
 
 		setMinimumSize(new Dimension(400, 400));
 		setLocationRelativeTo(null);
