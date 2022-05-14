@@ -5,6 +5,9 @@ import javax.swing.*;
 
 import static src.KnightsTour.BOARD_SIZE;
 import static src.KnightsTour.generateButtons;
+import static src.KnightsTour.manual;
+import static src.KnightsTour.auto;
+import static src.KnightsTour.sm;
 
 public class KnightsTourGUI extends JFrame {
 	// Holds all references of each cell/square on the chessboard
@@ -12,6 +15,8 @@ public class KnightsTourGUI extends JFrame {
 
 	// Container for all the buttons/cells on the chessboard
 	JPanel chessBoard;
+
+	public JLabel modeLabel;
 
 	/**
 	 * Generates the application window/frame
@@ -22,11 +27,14 @@ public class KnightsTourGUI extends JFrame {
 		JPanel controlPanel = new JPanel(new BorderLayout());
 		JPanel btnPanel = new JPanel();
 
-		JLabel modeLabel = new JLabel("Mode: Manual", SwingConstants.CENTER);
+		modeLabel = new JLabel("Mode: Manual", SwingConstants.CENTER);
 
 		JButton autoBtn = new JButton("Auto Tour");
 		JButton manualBtn = new JButton("Manual Tour");
 		JButton guidedBtn = new JButton("Guided Tour");
+
+		autoBtn.addActionListener(e -> sm.change(auto));
+		manualBtn.addActionListener(e -> sm.change(manual));
 
 		btnPanel.add(autoBtn);
 		btnPanel.add(manualBtn);

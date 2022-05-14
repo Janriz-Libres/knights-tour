@@ -2,9 +2,15 @@ package states;
 
 import javax.swing.JOptionPane;
 import src.Cell;
+
 import static src.KnightsTour.*;
 
 public class ManualState extends BaseState {
+    @Override
+    public void enter() {
+        app.modeLabel.setText("Mode: Manual");
+    }
+
     @Override
     public void processBtnEvent(Cell btn) {
         if (btn.isVisited())
@@ -29,5 +35,8 @@ public class ManualState extends BaseState {
 
         // Proceed to find neighbor cells (valid moves)
         findNeighbors(currentPos);
+
+        if (neighborCells.size() == 0)
+            JOptionPane.showMessageDialog(app, "Game Over! You're trapped.");
     }
 }

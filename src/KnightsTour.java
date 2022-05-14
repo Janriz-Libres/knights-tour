@@ -1,6 +1,9 @@
 package src;
 
 import javax.swing.*;
+
+import states.*;
+
 import java.util.*;
 import static src.KnightsTourGUI.*;
 
@@ -26,7 +29,13 @@ public class KnightsTour {
     // Keeps track of the knight's current position on the chessboard
     public static Cell currentPos;
 
-    static StateMachine sm = new StateMachine();
+    // Define program states
+    public static ManualState manual = new ManualState();
+    public static AutoState auto = new AutoState();
+    public static CalculateState calculate = new CalculateState();
+
+    // A StateMachine class that handles the program's state transitions and behavior
+    public static StateMachine sm = new StateMachine();
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
@@ -34,7 +43,7 @@ public class KnightsTour {
         });
     }
 
-    static public void beginKnightsTour(JButton btn) {
+    public static void beginKnightsTour(JButton btn) {
         // TODO
     }
 
@@ -43,7 +52,7 @@ public class KnightsTour {
      * 
      * @param frame a reference to the instance variable JFrame
      */
-    static public void generateButtons(KnightsTourGUI frame) {
+    public static void generateButtons(KnightsTourGUI frame) {
         for (int row = 0; row < BOARD_SIZE; row++) {
             for (int col = 0; col < BOARD_SIZE; col++) {
                 // Instantiates a new cell and stores its location via constructor
@@ -67,7 +76,7 @@ public class KnightsTour {
      * 
      * @param btn the cell to be occupied by the knight
      */
-    static public void moveKnight(Cell btn) {
+    public static void moveKnight(Cell btn) {
         designCurrentCell(btn);
         btn.setVisited(true);
         visitedCells.add(btn);
@@ -79,10 +88,10 @@ public class KnightsTour {
     /**
      * Resets the decorative states of neighbor cells
      */
-    static public void resetButtonState() {
+    public static void resetButtonState() {
         for (int i = 0; i < neighborCells.size(); i++) {
             Cell button = neighborCells.get(i);
-            button.setBackground(new java.awt.Color(229,223,214));
+            designBtn(button);
         }
 
         neighborCells.clear();
@@ -96,25 +105,19 @@ public class KnightsTour {
     static public void findNeighbors(Cell btn) {
         // Get the location of the current cell
         String pos = btn.locate();
-        System.out.println("Evaluating Position: " + pos);
 
         // Checks for valid neighbors
         for (int i = 0; i < KNIGHT_MOVES; i++) {
-            System.out.println("Solving position " + i + " neighbour...");
-
             // Get the corresponding row and column of current cell
             String parts[] = pos.split("");
-            
-            System.out.println("String index 0:" + parts[0]);
-            System.out.println("String index 1:" + parts[1]);
 
             // Calculate neighbor's presumed position on the board
-            int tempRow = Integer.parseInt(parts[0]) + moveOffsets[i][0];
-            int tempCol = Integer.parseInt(parts[1]) + moveOffsets[i][1];
+            int tempRow = Integer.parseInt(parts[1]) + moveOffsets[i][1];
+            int tempCol = Integer.parseInt(parts[0]) + moveOffsets[i][0];
 
             // Verify the neighbor's position by checking if it's on the board
             if (tempRow >= 0 & tempRow < BOARD_SIZE & tempCol >= 0 & tempCol < BOARD_SIZE) {
-                Cell button = app.cellArray[tempRow][tempCol];
+                Cell button = app.cellArray[tempCol][tempRow];
 
                 // If button is not visited, add it to the list of neighbors and set its color
                 if (!button.isVisited()) {
