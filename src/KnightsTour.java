@@ -10,15 +10,26 @@ import static src.KnightsTourGUI.*;
 public class KnightsTour {
     // Set constant attributes
     public static final int BOARD_SIZE = 8;
-    static final int KNIGHT_MOVES = 8;
+    public static final int KNIGHT_MOVES = 8;
 
     // Holds a reference to the GUI frame or window
     public static KnightsTourGUI app;
 
     // Stores the knight's movements relative to its origin
     static int moveOffsets[][] = {
-        {-2, 1}, {-1, 2}, {1, 2}, {2, 1}, {2, -1}, {1, -2}, {-1, -2}, {-2, -1}
+        {1, -2}, {2, -1}, {2, 1}, {1, 2}, {-1, 2}, {-2, 1}, {-2, -1}, {-1, -2}
     };
+
+    // Move orders for 0 mod 8
+    static int moveOrders[][] = {
+        {3, 4, 2, 6, 1, 5, 7, 8},
+        {8, 7, 6, 4, 2, 1, 3, 5},
+        {5, 1, 8, 6, 7, 3, 4, 2},
+        {5, 1, 3, 4, 2, 6, 7, 8},
+        {2, 1, 4, 3, 5, 6, 7, 8}
+    };
+
+    static int moveSet = 0;
 
     // Stores the knight's valid moves
     public static List<Cell> neighborCells = new ArrayList<Cell>();
@@ -26,13 +37,15 @@ public class KnightsTour {
     // Keeps track of visited cells
     public static List<Cell> visitedCells = new ArrayList<Cell>();
 
+    static int[] futureNeighbors = new int[KNIGHT_MOVES];
+
     // Keeps track of the knight's current position on the chessboard
     public static Cell currentPos;
 
     // Define program states
     public static ManualState manual = new ManualState();
     public static AutoState auto = new AutoState();
-    public static CalculateState calculate = new CalculateState();
+    public static TourState tour = new TourState();
 
     // A StateMachine class that handles the program's state transitions and behavior
     public static StateMachine sm = new StateMachine();
@@ -41,10 +54,6 @@ public class KnightsTour {
         SwingUtilities.invokeLater(() -> {
             app = new KnightsTourGUI();
         });
-    }
-
-    public static void beginKnightsTour(JButton btn) {
-        // TODO
     }
 
     /**
@@ -91,10 +100,10 @@ public class KnightsTour {
     public static void resetButtonState() {
         for (int i = 0; i < neighborCells.size(); i++) {
             Cell button = neighborCells.get(i);
-            designBtn(button);
+            
+            if (button != null)
+                designBtn(button);
         }
-
-        neighborCells.clear();
     }
 
     /**
@@ -102,7 +111,7 @@ public class KnightsTour {
      * 
      * @param btn cell where the knight is currently located
      */
-    static public void findNeighbors(Cell btn) {
+    public static void findNeighbors(Cell btn) {
         // Get the location of the current cell
         String pos = btn.locate();
 
@@ -112,19 +121,90 @@ public class KnightsTour {
             String parts[] = pos.split("");
 
             // Calculate neighbor's presumed position on the board
-            int tempRow = Integer.parseInt(parts[1]) + moveOffsets[i][1];
             int tempCol = Integer.parseInt(parts[0]) + moveOffsets[i][0];
+            int tempRow = Integer.parseInt(parts[1]) + moveOffsets[i][1];
 
             // Verify the neighbor's position by checking if it's on the board
-            if (tempRow >= 0 & tempRow < BOARD_SIZE & tempCol >= 0 & tempCol < BOARD_SIZE) {
+            if (isOnBoard(tempCol, tempRow)) {
                 Cell button = app.cellArray[tempCol][tempRow];
 
                 // If button is not visited, add it to the list of neighbors and set its color
                 if (!button.isVisited()) {
                     neighborCells.add(button);
+                    sm.findFutureNeighs(button, i);
                     designNeighbor(button);
+                    continue;
                 }
             }
+
+            neighborCells.add(null);
         }
+    }
+
+    public static void findFutureNeighs(Cell btn, int index) {
+        String pos = btn.locate();
+        int neighborCnt = 0;
+
+        for (int i = 0; i < KNIGHT_MOVES; i++) {
+            String parts[] = pos.split("");
+
+            int tempCol = Integer.parseInt(parts[0]) + moveOffsets[i][0];
+            int tempRow = Integer.parseInt(parts[1]) + moveOffsets[i][1];
+
+            if (isOnBoard(tempCol, tempRow)) {
+                Cell button = app.cellArray[tempCol][tempRow];
+
+                if (!button.isVisited())
+                    neighborCnt++;
+            }
+        }
+
+        futureNeighbors[index] = neighborCnt;
+    }
+
+    static boolean isOnBoard(int tempCol, int tempRow) {
+        return tempRow >= 0 && tempRow < BOARD_SIZE && tempCol >= 0 && tempCol < BOARD_SIZE;
+    }
+
+    public static Cell selectCell() {
+        List<Integer> btnIndexes = new ArrayList<Integer>();
+        int leastNeighborCnt = KNIGHT_MOVES;
+
+        for (int i = 0; i < KNIGHT_MOVES; i++) {
+            if (neighborCells.get(i) == null)
+                continue;
+
+            int neighborCnt = futureNeighbors[i];
+            
+            if (neighborCnt < leastNeighborCnt) {
+                leastNeighborCnt = neighborCnt;
+                btnIndexes.clear();
+                btnIndexes.add(i);
+                continue;
+            }
+
+            if (neighborCnt == leastNeighborCnt)
+                btnIndexes.add(i);
+        }
+
+        futureNeighbors = new int[KNIGHT_MOVES];
+        
+        if (btnIndexes.size() == 1)
+            return neighborCells.get(btnIndexes.get(0));
+        
+        return handleTies(btnIndexes);
+    }
+
+    public static Cell handleTies(List<Integer> btnIndexes) {
+        int index = 0;
+
+        for (int i = 0; i < KNIGHT_MOVES; i++) {
+            index = moveOrders[moveSet][i];
+
+            if (btnIndexes.contains(index))
+                break;
+        }
+
+        return neighborCells.get(index);
     }
 }

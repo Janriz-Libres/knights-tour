@@ -7,10 +7,6 @@ public abstract class BaseState {
     public void enter() {};
     public void exit() {};
 
-    /**
-     * Provides the logic for determining if the cell is a valid move/neighbor or not
-     * 
-     * @param btn the cell or button that the user has clicked on
-     */
     public void processBtnEvent(Cell btn) {};
+    public void findFutureNeighs(Cell btn, int index) {};
 }

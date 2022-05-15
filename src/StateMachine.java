@@ -19,4 +19,8 @@ public class StateMachine {
     public void processBtnEvent(Cell btn) {
         currentState.processBtnEvent(btn);
     }
+
+    public void findFutureNeighs(Cell btn, int index) {
+        currentState.findFutureNeighs(btn, index);
+    }
 }

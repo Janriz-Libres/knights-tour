@@ -1,9 +1,9 @@
 package states;
 
-import javax.swing.JOptionPane;
-import src.Cell;
-
 import static src.KnightsTour.*;
+import javax.swing.JOptionPane;
+
+import src.Cell;
 
 public class ManualState extends BaseState {
     @Override
@@ -23,15 +23,14 @@ public class ManualState extends BaseState {
                 return;
             
             resetButtonState();
+            neighborCells.clear();
         }
 
         // Update the position of the knight on the chessboard and mark the cell it is on as visited
         moveKnight(btn);
 
-        if (visitedCells.size() == BOARD_SIZE * BOARD_SIZE) {
+        if (visitedCells.size() == BOARD_SIZE * BOARD_SIZE)
             JOptionPane.showMessageDialog(app, "Congratulations! You successfully made a tour!");
-            return;
-        }
 
         // Proceed to find neighbor cells (valid moves)
         findNeighbors(currentPos);
