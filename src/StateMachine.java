@@ -1,11 +1,11 @@
 package src;
 
 import states.BaseState;
-import static src.KnightsTour.manual;
+// import static src.KnightsTour.manual;
 import static src.KnightsTour.auto;
 
 public class StateMachine {
-    private BaseState currentState = manual;
+    private BaseState currentState = auto;
 
     void change(BaseState state) {
         currentState.exit();

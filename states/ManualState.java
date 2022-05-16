@@ -37,8 +37,10 @@ public class ManualState extends BaseState {
         // Update the position of the knight on the chessboard and mark the cell it is on as visited
         moveKnight(btn);
 
-        if (visitedCells.size() == BOARD_SIZE * BOARD_SIZE)
+        if (visitedCells.size() == BOARD_SIZE * BOARD_SIZE) {
             JOptionPane.showMessageDialog(app, "Congratulations! You successfully made a tour!");
+            return;
+        }
 
         // Proceed to find neighbor cells (valid moves)
         findNeighbors(currentPos);

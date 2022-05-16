@@ -36,7 +36,7 @@ public class KnightsTourGUI extends JFrame {
 		JPanel controlPanel = new JPanel(new BorderLayout());
 		JPanel btnPanel = new JPanel();
 
-		modeLabel = new JLabel("Mode: Manual", SwingConstants.CENTER);
+		modeLabel = new JLabel("Mode: Auto", SwingConstants.CENTER);
 
 		JButton autoBtn = new JButton("Auto Tour");
 		JButton manualBtn = new JButton("Manual Tour");
