@@ -37,7 +37,7 @@ public class KnightsTour {
     // Keeps track of visited cells
     public static List<Cell> visitedCells = new ArrayList<Cell>();
 
-    static int[] futureNeighbors = new int[KNIGHT_MOVES];
+    public static int[] futureNeighbors = new int[KNIGHT_MOVES];
 
     // Keeps track of the knight's current position on the chessboard
     public static Cell currentPos;
@@ -45,7 +45,6 @@ public class KnightsTour {
     // Define program states
     public static ManualState manual = new ManualState();
     public static AutoState auto = new AutoState();
-    public static TourState tour = new TourState();
 
     // A StateMachine class that handles the program's state transitions and behavior
     public static StateMachine sm = new StateMachine();
@@ -94,16 +93,47 @@ public class KnightsTour {
         currentPos = btn;
     }
 
+    public static void resetAll() {
+        currentPos = null;
+        resetNeighbors();
+        resetVisited();
+    }
+
+    private static void resetVisited() {
+        for (int i = 0; i < visitedCells.size(); i++) {
+            Cell btn = visitedCells.get(i);
+            designBtn(btn);
+            btn.setVisited(false);
+        }
+
+        visitedCells.clear();
+    }
+
     /**
      * Resets the decorative states of neighbor cells
      */
-    public static void resetButtonState() {
+    public static void resetNeighbors() {
         for (int i = 0; i < neighborCells.size(); i++) {
             Cell button = neighborCells.get(i);
             
             if (button != null)
                 designBtn(button);
         }
+
+        neighborCells.clear();
+    }
+
+    public static void updateMoveOrder(Cell btn) {
+        String pos = btn.locate();
+
+        if (pos.equals("76") && moveSet == 0)
+            moveSet = 1;
+        else if (pos.equals("22") && moveSet == 1)
+            moveSet = 2;
+        else if (pos.equals("01") && moveSet == 2)
+            moveSet = 3;
+        else if (pos.equals("75") && moveSet == 3)
+            moveSet = 4;
     }
 
     /**
@@ -141,7 +171,7 @@ public class KnightsTour {
         }
     }
 
-    public static void findFutureNeighs(Cell btn, int index) {
+    public static void cntFutureNeighs(Cell btn, int index) {
         String pos = btn.locate();
         int neighborCnt = 0;
 
@@ -202,9 +232,9 @@ public class KnightsTour {
             index = moveOrders[moveSet][i];
 
             if (btnIndexes.contains(index))
-                break;
+                return neighborCells.get(index);
         }
 
-        return neighborCells.get(index);
+        return null;
     }
 }

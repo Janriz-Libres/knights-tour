@@ -8,6 +8,7 @@ import src.Cell;
 public class ManualState extends BaseState {
     @Override
     public void enter() {
+        resetAll();
         app.modeLabel.setText("Mode: Manual");
     }
 
@@ -22,8 +23,7 @@ public class ManualState extends BaseState {
             if (!neighborCells.contains(btn))
                 return;
             
-            resetButtonState();
-            neighborCells.clear();
+            resetNeighbors();
         }
 
         // Update the position of the knight on the chessboard and mark the cell it is on as visited
@@ -35,7 +35,16 @@ public class ManualState extends BaseState {
         // Proceed to find neighbor cells (valid moves)
         findNeighbors(currentPos);
 
-        if (neighborCells.size() == 0)
+        if (isnull())
             JOptionPane.showMessageDialog(app, "Game Over! You're trapped.");
+    }
+
+    private boolean isnull() {
+        for (int i = 0; i < neighborCells.size(); i++) {
+            if (neighborCells.get(i) != null)
+                return false;
+        }
+
+        return true;
     }
 }
