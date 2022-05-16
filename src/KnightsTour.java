@@ -1,10 +1,13 @@
 package src;
 
-import javax.swing.*;
+import javax.swing.SwingUtilities;
+import java.util.List;
+import java.util.ArrayList;
 
-import states.*;
+import states.AutoState;
+import states.GuidedState;
+import states.ManualState;
 
-import java.util.*;
 import static src.KnightsTourGUI.*;
 
 public class KnightsTour {
@@ -16,12 +19,12 @@ public class KnightsTour {
     public static KnightsTourGUI app;
 
     // Stores the knight's movements relative to its origin
-    static int moveOffsets[][] = {
+    private static int moveOffsets[][] = {
         {1, -2}, {2, -1}, {2, 1}, {1, 2}, {-1, 2}, {-2, 1}, {-2, -1}, {-1, -2}
     };
 
     // Move orders for 0 mod 8
-    static int moveOrders[][] = {
+    private static int moveOrders[][] = {
         {3, 4, 2, 6, 1, 5, 7, 8},
         {8, 7, 6, 4, 2, 1, 3, 5},
         {5, 1, 8, 6, 7, 3, 4, 2},
@@ -29,7 +32,7 @@ public class KnightsTour {
         {2, 1, 4, 3, 5, 6, 7, 8}
     };
 
-    static int moveSet = 0;
+    public static int moveSet = 0;
 
     // Stores the knight's valid moves
     public static List<Cell> neighborCells = new ArrayList<Cell>();
@@ -43,11 +46,12 @@ public class KnightsTour {
     public static Cell currentPos;
 
     // Define program states
-    public static ManualState manual = new ManualState();
-    public static AutoState auto = new AutoState();
+    static ManualState manual = new ManualState();
+    static AutoState auto = new AutoState();
+    static GuidedState guided = new GuidedState();
 
     // A StateMachine class that handles the program's state transitions and behavior
-    public static StateMachine sm = new StateMachine();
+    static StateMachine sm = new StateMachine();
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
@@ -60,7 +64,7 @@ public class KnightsTour {
      * 
      * @param frame a reference to the instance variable JFrame
      */
-    public static void generateButtons(KnightsTourGUI frame) {
+    static void generateButtons(KnightsTourGUI frame) {
         for (int row = 0; row < BOARD_SIZE; row++) {
             for (int col = 0; col < BOARD_SIZE; col++) {
                 // Instantiates a new cell and stores its location via constructor
@@ -192,7 +196,7 @@ public class KnightsTour {
         futureNeighbors[index] = neighborCnt;
     }
 
-    static boolean isOnBoard(int tempCol, int tempRow) {
+    private static boolean isOnBoard(int tempCol, int tempRow) {
         return tempRow >= 0 && tempRow < BOARD_SIZE && tempCol >= 0 && tempCol < BOARD_SIZE;
     }
 
@@ -225,7 +229,7 @@ public class KnightsTour {
         return handleTies(btnIndexes);
     }
 
-    public static Cell handleTies(List<Integer> btnIndexes) {
+    private static Cell handleTies(List<Integer> btnIndexes) {
         int index = 0;
 
         for (int i = 0; i < KNIGHT_MOVES; i++) {

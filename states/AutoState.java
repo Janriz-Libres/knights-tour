@@ -1,14 +1,30 @@
 package states;
 
-import javax.swing.JOptionPane;
+import static src.KnightsTour.BOARD_SIZE;
+import static src.KnightsTour.neighborCells;
+import static src.KnightsTour.app;
+import static src.KnightsTour.currentPos;
+import static src.KnightsTour.moveSet;
+import static src.KnightsTour.resetAll;
+import static src.KnightsTour.resetNeighbors;
+import static src.KnightsTour.moveKnight;
+import static src.KnightsTour.findNeighbors;
+import static src.KnightsTour.selectCell;
+import static src.KnightsTour.cntFutureNeighs;
+import static src.KnightsTour.updateMoveOrder;
+
 import src.Cell;
-import static src.KnightsTour.*;
+import javax.swing.JOptionPane;
 
 public class AutoState extends BaseState {
+    public Thread tour;
+    private boolean terminate = false;
+
     @Override
     public void enter() {
         resetAll();
         app.modeLabel.setText("Mode: Auto");
+        terminate = false;
     }
 
     @Override
@@ -16,7 +32,7 @@ public class AutoState extends BaseState {
         if (currentPos != null)
             return;
         
-        Thread tour = new Thread(() -> createTour(btn));
+        tour = new Thread(() -> createTour(btn));
         tour.start();
     }
 
@@ -38,16 +54,25 @@ public class AutoState extends BaseState {
 
             Cell destination = selectCell();
             btn = destination;
+
+            if (terminate)
+                return;
         }
 
         neighborCells.clear();
         moveKnight(btn);
 
-        JOptionPane.showMessageDialog(app, "Knight Tour finished!");
+        JOptionPane.showMessageDialog(app, "Knight's Tour Complete!");
     }
 
     @Override
     public void findFutureNeighs(Cell btn, int index) {
         cntFutureNeighs(btn, index);
+    }
+
+    @Override
+    public void exit() {
+        terminate = true;
+        moveSet = 0;
     }
 }

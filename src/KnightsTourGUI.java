@@ -1,12 +1,21 @@
 package src;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.GridLayout;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Color;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 import static src.KnightsTour.BOARD_SIZE;
 import static src.KnightsTour.generateButtons;
 import static src.KnightsTour.manual;
 import static src.KnightsTour.auto;
+import static src.KnightsTour.guided;
 import static src.KnightsTour.sm;
 
 public class KnightsTourGUI extends JFrame {
@@ -35,6 +44,7 @@ public class KnightsTourGUI extends JFrame {
 
 		autoBtn.addActionListener(e -> sm.change(auto));
 		manualBtn.addActionListener(e -> sm.change(manual));
+		guidedBtn.addActionListener(e -> sm.change(guided));
 
 		btnPanel.add(autoBtn);
 		btnPanel.add(manualBtn);
@@ -79,5 +89,9 @@ public class KnightsTourGUI extends JFrame {
 	 */
 	static void designNeighbor(JButton btn) {
 		btn.setBackground(new Color(180,160,126));
+	}
+
+	public static void designSelectedCell(JButton btn) {
+		btn.setBackground(Color.GREEN);
 	}
 }

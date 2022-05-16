@@ -1,9 +1,17 @@
 package states;
 
-import static src.KnightsTour.*;
-import javax.swing.JOptionPane;
+import static src.KnightsTour.BOARD_SIZE;
+import static src.KnightsTour.neighborCells;
+import static src.KnightsTour.app;
+import static src.KnightsTour.currentPos;
+import static src.KnightsTour.visitedCells;
+import static src.KnightsTour.resetAll;
+import static src.KnightsTour.resetNeighbors;
+import static src.KnightsTour.moveKnight;
+import static src.KnightsTour.findNeighbors;
 
 import src.Cell;
+import javax.swing.JOptionPane;
 
 public class ManualState extends BaseState {
     @Override
@@ -35,11 +43,11 @@ public class ManualState extends BaseState {
         // Proceed to find neighbor cells (valid moves)
         findNeighbors(currentPos);
 
-        if (isnull())
+        if (noNeighbors())
             JOptionPane.showMessageDialog(app, "Game Over! You're trapped.");
     }
 
-    private boolean isnull() {
+    private boolean noNeighbors() {
         for (int i = 0; i < neighborCells.size(); i++) {
             if (neighborCells.get(i) != null)
                 return false;
