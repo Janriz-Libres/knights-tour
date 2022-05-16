@@ -1,6 +1,5 @@
 package states;
 
-import src.Cell;
 import static src.KnightsTour.moveSet;
 import static src.KnightsTour.currentPos;
 import static src.KnightsTour.app;
@@ -13,6 +12,7 @@ import static src.KnightsTour.selectCell;
 import static src.KnightsTour.cntFutureNeighs;
 import static src.KnightsTourGUI.designSelectedCell;
 
+import src.Cell;
 import javax.swing.JOptionPane;
 
 public class GuidedState extends BaseState {
@@ -26,19 +26,16 @@ public class GuidedState extends BaseState {
 
     @Override
     public void processBtnEvent(Cell btn) {
-        if (destination == null)
-            destination = btn;
+        if (currentPos != null) {
+            if (!btn.equals(destination))
+                return;
 
-        if (!btn.equals(destination))
-            return;
-
-        updateMoveOrder(btn);
-
-        if (currentPos != null)
             resetNeighbors();
+        }
 
         moveKnight(btn);
         findNeighbors(btn);
+        updateMoveOrder(btn);
         
         destination = selectCell();
         
