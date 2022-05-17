@@ -47,7 +47,7 @@ public class AutoState extends BaseState {
             findNeighbors(btn);
 
             try {
-                Thread.sleep(300);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

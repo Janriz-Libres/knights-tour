@@ -1,7 +1,6 @@
 package src;
 
 import states.BaseState;
-// import static src.KnightsTour.manual;
 import static src.KnightsTour.auto;
 
 public class StateMachine {

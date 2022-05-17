@@ -59,6 +59,29 @@ public class KnightsTour {
         SwingUtilities.invokeLater(() -> {
             app = new KnightsTourGUI();
         });
+
+        // app = new KnightsTourGUI();
+        // evaluateAlgorithm();
+    }
+
+    // Loop through all of the cells in the chessboard and attempt to find a tour in each
+    static void evaluateAlgorithm() {
+        for (int row = 0; row < BOARD_SIZE; row++) {
+            for (int col = 0; col < BOARD_SIZE; col++) {
+                Cell btn = app.cellArray[col][row];
+                System.out.println("Evaluating btn: " + btn.locate());
+                btn.doClick();
+
+                try {
+                    if (auto.tour != null)
+                        auto.tour.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                sm.change(auto);
+            }
+        }
     }
 
     /**
@@ -203,7 +226,7 @@ public class KnightsTour {
     }
 
     public static Cell selectCell() {
-        // Stores the indexes which correspond the cells in the neighborCells array list with the least
+        // Stores the indexes which correspond to the cells in the neighborCells array list with the least
         // neighbor count
         List<Integer> btnIndexes = new ArrayList<Integer>();
 
@@ -238,8 +261,9 @@ public class KnightsTour {
     private static Cell handleTies(List<Integer> btnIndexes) {
         int index = 0;
 
+        // Iterate through the move orders depending on the moveset
         for (int i = 0; i < KNIGHT_MOVES; i++) {
-            index = moveOrders[moveSet][i];
+            index = moveOrders[moveSet][i] - 1;
 
             if (btnIndexes.contains(index))
                 return neighborCells.get(index);
