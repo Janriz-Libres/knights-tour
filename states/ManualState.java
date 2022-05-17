@@ -49,6 +49,11 @@ public class ManualState extends BaseState {
             JOptionPane.showMessageDialog(app, "Game Over! You're trapped.");
     }
 
+    /**
+     * Checks to see if there are no valid neighbor cells found
+     * 
+     * @return true if there are no valid neighbors found and false if there are
+     */
     private boolean noNeighbors() {
         for (int i = 0; i < neighborCells.size(); i++) {
             if (neighborCells.get(i) != null)

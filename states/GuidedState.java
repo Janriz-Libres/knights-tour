@@ -16,6 +16,7 @@ import src.Cell;
 import javax.swing.JOptionPane;
 
 public class GuidedState extends BaseState {
+    // Stores the cell that the knight should occupy next in tour progressions
     private Cell destination;
 
     @Override
