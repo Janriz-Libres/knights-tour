@@ -42,7 +42,7 @@ public class GuidedState extends BaseState {
         if (destination != null)
             designSelectedCell(destination);
         else
-            JOptionPane.showMessageDialog(app, "Guided Knight's Tour Complete!");
+            JOptionPane.showMessageDialog(app, "Guided Tour Complete!");
     }
 
     @Override

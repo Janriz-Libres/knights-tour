@@ -23,7 +23,7 @@ public class KnightsTour {
         {1, -2}, {2, -1}, {2, 1}, {1, 2}, {-1, 2}, {-2, 1}, {-2, -1}, {-1, -2}
     };
 
-    // Move orders for 0 mod 8
+    // Move orders for a chessboard of size m congruent to 0 mod 8
     private static int moveOrders[][] = {
         {3, 4, 2, 6, 1, 5, 7, 8},
         {8, 7, 6, 4, 2, 1, 3, 5},
@@ -32,7 +32,11 @@ public class KnightsTour {
         {2, 1, 4, 3, 5, 6, 7, 8}
     };
 
+    // Keeps track of the current move order
     public static int moveSet = 0;
+
+    // Keeps track of the knight's current position on the chessboard
+    public static Cell currentPos;
 
     // Stores the knight's valid moves
     public static List<Cell> neighborCells = new ArrayList<Cell>();
@@ -40,10 +44,8 @@ public class KnightsTour {
     // Keeps track of visited cells
     public static List<Cell> visitedCells = new ArrayList<Cell>();
 
+    // Stores the number of neighbors of the knight's valid moves
     public static int[] futureNeighbors = new int[KNIGHT_MOVES];
-
-    // Keeps track of the knight's current position on the chessboard
-    public static Cell currentPos;
 
     // Define program states
     static ManualState manual = new ManualState();
@@ -175,6 +177,10 @@ public class KnightsTour {
         }
     }
 
+    private static boolean isOnBoard(int tempCol, int tempRow) {
+        return tempRow >= 0 && tempRow < BOARD_SIZE && tempCol >= 0 && tempCol < BOARD_SIZE;
+    }
+
     public static void cntFutureNeighs(Cell btn, int index) {
         String pos = btn.locate();
         int neighborCnt = 0;
@@ -196,12 +202,12 @@ public class KnightsTour {
         futureNeighbors[index] = neighborCnt;
     }
 
-    private static boolean isOnBoard(int tempCol, int tempRow) {
-        return tempRow >= 0 && tempRow < BOARD_SIZE && tempCol >= 0 && tempCol < BOARD_SIZE;
-    }
-
     public static Cell selectCell() {
+        // Stores the indexes which correspond the cells in the neighborCells array list with the least
+        // neighbor count
         List<Integer> btnIndexes = new ArrayList<Integer>();
+
+        // Stores the least neighbor count among the neighbors
         int leastNeighborCnt = KNIGHT_MOVES;
 
         for (int i = 0; i < KNIGHT_MOVES; i++) {

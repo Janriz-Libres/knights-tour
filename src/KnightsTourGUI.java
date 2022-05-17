@@ -12,11 +12,11 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import static src.KnightsTour.BOARD_SIZE;
-import static src.KnightsTour.generateButtons;
 import static src.KnightsTour.manual;
 import static src.KnightsTour.auto;
 import static src.KnightsTour.guided;
 import static src.KnightsTour.sm;
+import static src.KnightsTour.generateButtons;
 
 public class KnightsTourGUI extends JFrame {
 	// Holds all references of each cell/square on the chessboard
@@ -25,6 +25,7 @@ public class KnightsTourGUI extends JFrame {
 	// Container for all the buttons/cells on the chessboard
 	JPanel chessBoard;
 
+	// A label that indicates the current mode of the application
 	public JLabel modeLabel;
 
 	/**
@@ -91,6 +92,11 @@ public class KnightsTourGUI extends JFrame {
 		btn.setBackground(new Color(180,160,126));
 	}
 
+	/**
+	 * Decorates the designated cell that the user should click on during the guided tour
+	 * 
+	 * @param btn the highlighted cell
+	 */
 	public static void designSelectedCell(JButton btn) {
 		btn.setBackground(Color.GREEN);
 	}
