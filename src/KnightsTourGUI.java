@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Color;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -66,7 +67,8 @@ public class KnightsTourGUI extends JFrame {
 
 		generateButtons(this);
 
-		setTitle("Knight's Tour");
+		setTitle("C Triple J Knight's Tour");
+		setIconImage(new ImageIcon("icon.png").getImage());
 		setMinimumSize(new Dimension(400, 400));
 		setLocationRelativeTo(null);
 		setVisible(true);
