@@ -3,7 +3,10 @@ package src;
 import javax.swing.JButton;
 
 public class Cell extends JButton {
+    // Stores the location of the cell on the chessboard
     private String location;
+
+    // Keeps track if the cell is already visited
     private boolean visited = false;
 
     Cell(String pos) {
