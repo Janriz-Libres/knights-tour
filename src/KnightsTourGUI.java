@@ -33,6 +33,7 @@ public class KnightsTourGUI extends JFrame {
 	 */
 	public KnightsTourGUI() {
 		chessBoard = new JPanel(new GridLayout(BOARD_SIZE, BOARD_SIZE));
+		setTitle("Knight's Tour");
 		
 		JPanel controlPanel = new JPanel(new BorderLayout());
 		JPanel btnPanel = new JPanel();
@@ -40,8 +41,14 @@ public class KnightsTourGUI extends JFrame {
 		modeLabel = new JLabel("Mode: Auto", SwingConstants.CENTER);
 
 		JButton autoBtn = new JButton("Auto Tour");
+		autoBtn.setBackground(new Color(84,68,50));
+		autoBtn.setForeground(Color.WHITE);
 		JButton manualBtn = new JButton("Manual Tour");
+		manualBtn.setBackground(new Color(84,68,50));
+		manualBtn.setForeground(Color.WHITE);
 		JButton guidedBtn = new JButton("Guided Tour");
+		guidedBtn.setBackground(new Color(84,68,50));
+		guidedBtn.setForeground(Color.WHITE);
 
 		autoBtn.addActionListener(e -> sm.change(auto));
 		manualBtn.addActionListener(e -> sm.change(manual));
@@ -89,7 +96,7 @@ public class KnightsTourGUI extends JFrame {
 	 * @param btn a valid neighbor cell/button to be designed
 	 */
 	static void designNeighbor(JButton btn) {
-		btn.setBackground(new Color(180,160,126));
+		btn.setBackground(new Color(144,119,85,255));
 	}
 
 	/**
