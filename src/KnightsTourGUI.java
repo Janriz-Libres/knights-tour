@@ -43,16 +43,19 @@ public class KnightsTourGUI extends JFrame {
 		JButton autoBtn = new JButton("Auto Tour");
 		autoBtn.setBackground(new Color(84,68,50));
 		autoBtn.setForeground(Color.WHITE);
+		autoBtn.setFocusPainted(false);
 		autoBtn.addActionListener(e -> sm.change(auto));
 
 		JButton manualBtn = new JButton("Manual Tour");
 		manualBtn.setBackground(new Color(84,68,50));
 		manualBtn.setForeground(Color.WHITE);
+		manualBtn.setFocusPainted(false);
 		manualBtn.addActionListener(e -> sm.change(manual));
 
 		JButton guidedBtn = new JButton("Guided Tour");
 		guidedBtn.setBackground(new Color(84,68,50));
 		guidedBtn.setForeground(Color.WHITE);
+		guidedBtn.setFocusPainted(false);
 		guidedBtn.addActionListener(e -> sm.change(guided));
 
 		btnPanel.add(autoBtn);

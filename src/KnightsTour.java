@@ -300,7 +300,7 @@ public class KnightsTour {
         if (btnIndexes.size() == 1)
             return neighborCells.get(btnIndexes.get(0));
         
-        // Otherwise, handle the tie using Sam Ganzfried's algorithm
+        // Otherwise, handle the tie using Squirrel's algorithm
         return handleTies(btnIndexes);
     }
 
