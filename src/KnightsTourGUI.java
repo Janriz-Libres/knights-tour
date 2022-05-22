@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Color;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -33,7 +34,6 @@ public class KnightsTourGUI extends JFrame {
 	 */
 	public KnightsTourGUI() {
 		chessBoard = new JPanel(new GridLayout(BOARD_SIZE, BOARD_SIZE));
-		setTitle("Knight's Tour");
 		
 		JPanel controlPanel = new JPanel(new BorderLayout());
 		JPanel btnPanel = new JPanel();
@@ -43,15 +43,19 @@ public class KnightsTourGUI extends JFrame {
 		JButton autoBtn = new JButton("Auto Tour");
 		autoBtn.setBackground(new Color(84,68,50));
 		autoBtn.setForeground(Color.WHITE);
+		autoBtn.setFocusPainted(false);
+		autoBtn.addActionListener(e -> sm.change(auto));
+
 		JButton manualBtn = new JButton("Manual Tour");
 		manualBtn.setBackground(new Color(84,68,50));
 		manualBtn.setForeground(Color.WHITE);
+		manualBtn.setFocusPainted(false);
+		manualBtn.addActionListener(e -> sm.change(manual));
+
 		JButton guidedBtn = new JButton("Guided Tour");
 		guidedBtn.setBackground(new Color(84,68,50));
 		guidedBtn.setForeground(Color.WHITE);
-
-		autoBtn.addActionListener(e -> sm.change(auto));
-		manualBtn.addActionListener(e -> sm.change(manual));
+		guidedBtn.setFocusPainted(false);
 		guidedBtn.addActionListener(e -> sm.change(guided));
 
 		btnPanel.add(autoBtn);
@@ -66,6 +70,8 @@ public class KnightsTourGUI extends JFrame {
 
 		generateButtons(this);
 
+		setTitle("C Triple J Knight's Tour");
+		setIconImage(new ImageIcon("icon.png").getImage());
 		setMinimumSize(new Dimension(400, 400));
 		setLocationRelativeTo(null);
 		setVisible(true);

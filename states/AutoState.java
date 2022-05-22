@@ -17,7 +17,10 @@ import src.Cell;
 import javax.swing.JOptionPane;
 
 public class AutoState extends BaseState {
+    // The thread responsible for finding a knight's tour
     public Thread tour;
+
+    // Keeps track of whether or not the thread should be terminated/stopped
     private boolean terminate = false;
 
     @Override
@@ -36,6 +39,12 @@ public class AutoState extends BaseState {
         tour.start();
     }
 
+    /**
+     * Creates a full knight's tour on the chessboard according to cell clicked by the user as the
+     * starting position
+     * 
+     * @param btn the starting position/cell
+     */
     private void createTour(Cell btn) {
         for (int i = 0; i < BOARD_SIZE * BOARD_SIZE - 1; i++) {
             updateMoveOrder(btn);
