@@ -78,7 +78,7 @@ public class KnightsTourGUI extends JFrame {
 	 * @param btn the general cell/button to be designed
 	 */
 	static void designBtn(JButton btn) {
-		btn.setBackground(new Color(229,223,214));
+		btn.setBackground(new Color(255,251,236,255));
 	}
 
 	/**
