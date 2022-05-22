@@ -61,26 +61,6 @@ public class KnightsTour {
         });
     }
 
-    // Loop through all of the cells in the chessboard and attempt to find a tour in each
-    static void evaluateAlgorithm() {
-        for (int row = 0; row < BOARD_SIZE; row++) {
-            for (int col = 0; col < BOARD_SIZE; col++) {
-                Cell btn = app.cellArray[col][row];
-                System.out.println("Evaluating btn: " + btn.locate());
-                btn.doClick();
-
-                try {
-                    if (auto.tour != null)
-                        auto.tour.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                sm.change(auto);
-            }
-        }
-    }
-
     /**
      * Populate the chessboard with cells/squares
      * 
