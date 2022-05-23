@@ -1,17 +1,15 @@
 package states;
 
 import static src.KnightsTour.BOARD_SIZE;
-import static src.KnightsTour.neighborCells;
 import static src.KnightsTour.app;
 import static src.KnightsTour.currentPos;
-import static src.KnightsTour.moveSet;
-import static src.KnightsTour.resetAll;
 import static src.KnightsTour.resetNeighbors;
 import static src.KnightsTour.moveKnight;
 import static src.KnightsTour.findNeighbors;
 import static src.KnightsTour.selectCell;
 import static src.KnightsTour.cntFutureNeighs;
 import static src.KnightsTour.updateMoveOrder;
+import static src.KnightsTour.showResetBtn;
 
 import src.Cell;
 import javax.swing.JOptionPane;
@@ -25,9 +23,9 @@ public class AutoState extends BaseState {
 
     @Override
     public void enter() {
-        resetAll();
-        app.modeLabel.setText("Mode: Auto");
         terminate = false;
+        app.modeLabel.setText("Mode: Auto");
+        app.autoBtn.setVisible(false);
     }
 
     @Override
@@ -46,6 +44,8 @@ public class AutoState extends BaseState {
      * @param btn the starting position/cell
      */
     private void createTour(Cell btn) {
+        showResetBtn();
+
         for (int i = 0; i < BOARD_SIZE * BOARD_SIZE - 1; i++) {
             updateMoveOrder(btn);
 
@@ -54,6 +54,7 @@ public class AutoState extends BaseState {
 
             moveKnight(btn);
             findNeighbors(btn);
+            app.getToolkit().sync();
 
             try {
                 Thread.sleep(100);
@@ -68,10 +69,9 @@ public class AutoState extends BaseState {
                 return;
         }
 
-        neighborCells.clear();
         moveKnight(btn);
-
-        JOptionPane.showMessageDialog(app, "Knight's Tour Complete!");
+        new Thread(() -> JOptionPane.showMessageDialog(app, "Knight's Tour Complete!",
+            "Success", JOptionPane.INFORMATION_MESSAGE)).start();
     }
 
     @Override
@@ -80,8 +80,28 @@ public class AutoState extends BaseState {
     }
 
     @Override
+    public void reset() {
+        terminate = true;
+        waitForThread();
+        terminate = false;
+    }
+
+    @Override
     public void exit() {
         terminate = true;
-        moveSet = 0;
+        waitForThread();
+        app.autoBtn.setVisible(true);
+    }
+
+    /**
+     * If this state is running a thread, wait for the thread to finish before proceeding
+     */
+    private void waitForThread() {
+        try {
+            if (tour != null)
+                tour.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -1,15 +1,14 @@
 package states;
 
-import static src.KnightsTour.moveSet;
 import static src.KnightsTour.currentPos;
 import static src.KnightsTour.app;
-import static src.KnightsTour.resetAll;
 import static src.KnightsTour.updateMoveOrder;
 import static src.KnightsTour.resetNeighbors;
 import static src.KnightsTour.moveKnight;
 import static src.KnightsTour.findNeighbors;
 import static src.KnightsTour.selectCell;
 import static src.KnightsTour.cntFutureNeighs;
+import static src.KnightsTour.showResetBtn;
 import static src.KnightsTourGUI.designSelectedCell;
 
 import src.Cell;
@@ -21,8 +20,8 @@ public class GuidedState extends BaseState {
 
     @Override
     public void enter() {
-        resetAll();
         app.modeLabel.setText("Mode: Guided");
+        app.guidedBtn.setVisible(false);
     }
 
     @Override
@@ -32,6 +31,8 @@ public class GuidedState extends BaseState {
                 return;
 
             resetNeighbors();
+        } else {
+            showResetBtn();
         }
 
         moveKnight(btn);
@@ -40,10 +41,12 @@ public class GuidedState extends BaseState {
         
         destination = selectCell();
         
-        if (destination != null)
+        if (destination != null) {
             designSelectedCell(destination);
-        else
-            JOptionPane.showMessageDialog(app, "Guided Tour Complete!");
+        } else {
+            JOptionPane.showMessageDialog(app, "Guided Tour Complete!", "Success",
+                JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     @Override
@@ -52,8 +55,13 @@ public class GuidedState extends BaseState {
     }
 
     @Override
+    public void reset() {
+        destination = null;
+    }
+
+    @Override
     public void exit() {
         destination = null;
-        moveSet = 0;
+        app.guidedBtn.setVisible(true);
     }
 }
