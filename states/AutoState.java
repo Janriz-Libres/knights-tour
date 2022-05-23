@@ -70,7 +70,8 @@ public class AutoState extends BaseState {
         }
 
         moveKnight(btn);
-        new Thread(() -> JOptionPane.showMessageDialog(app, "Knight's Tour Complete!")).start();
+        new Thread(() -> JOptionPane.showMessageDialog(app, "Knight's Tour Complete!",
+            "Success", JOptionPane.INFORMATION_MESSAGE)).start();
     }
 
     @Override

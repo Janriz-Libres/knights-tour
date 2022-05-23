@@ -40,15 +40,18 @@ public class ManualState extends BaseState {
         moveKnight(btn);
 
         if (visitedCells.size() == BOARD_SIZE * BOARD_SIZE) {
-            JOptionPane.showMessageDialog(app, "Congratulations! You successfully made a tour!");
+            JOptionPane.showMessageDialog(app, "Congratulations! You successfully made a tour!",
+                "Success", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
 
         // Proceed to find neighbor cells (valid moves)
         findNeighbors(currentPos);
 
-        if (noNeighbors())
-            JOptionPane.showMessageDialog(app, "Game Over! You're trapped.");
+        if (noNeighbors()) {
+            JOptionPane.showMessageDialog(app, "Game Over! You're trapped.", "Game Over",
+                JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**

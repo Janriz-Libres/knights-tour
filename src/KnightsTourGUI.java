@@ -67,7 +67,9 @@ public class KnightsTourGUI extends JFrame {
 		resetBtn.setVisible(false);
 
 		verticalLine = new JSeparator(SwingConstants.VERTICAL);
-		verticalLine.setPreferredSize(new Dimension(1, 25));
+		Dimension d = verticalLine.getPreferredSize();
+		d.height = autoBtn.getPreferredSize().height;
+		verticalLine.setPreferredSize(d);
 		verticalLine.setVisible(false);
 
 		btnPanel.add(autoBtn);
@@ -82,7 +84,6 @@ public class KnightsTourGUI extends JFrame {
 		orderCheckBox.addItemListener(e -> updatePreference(e));
 
 		JSeparator horizontal = new JSeparator(SwingConstants.HORIZONTAL);
-		horizontal.setPreferredSize(new Dimension(200, 1));
 
 		topPanel.add(modeLabel, BorderLayout.NORTH);
 		topPanel.add(horizontal);
@@ -98,10 +99,11 @@ public class KnightsTourGUI extends JFrame {
 
 		setTitle("C Triple J Knight's Tour");
 		setIconImage(new ImageIcon("icon.png").getImage());
-		setMinimumSize(new Dimension(400, 400));
+		setSize(400, 400);
+		setResizable(false);
 		setLocationRelativeTo(null);
 		setVisible(true);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 
 	/**

@@ -41,10 +41,12 @@ public class GuidedState extends BaseState {
         
         destination = selectCell();
         
-        if (destination != null)
+        if (destination != null) {
             designSelectedCell(destination);
-        else
-            JOptionPane.showMessageDialog(app, "Guided Tour Complete!");
+        } else {
+            JOptionPane.showMessageDialog(app, "Guided Tour Complete!", "Success",
+                JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     @Override
