@@ -29,4 +29,9 @@ public abstract class BaseState {
      * @param index the index that corresponds to the neighbor cell
      */
     public void findFutureNeighs(Cell btn, int index) {};
+
+    /**
+     * Resets the chessboard back to its original state
+     */
+    public void reset() {};
 }

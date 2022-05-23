@@ -7,10 +7,12 @@ import java.awt.Color;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import javax.swing.JSeparator;
 
 import static src.KnightsTour.BOARD_SIZE;
 import static src.KnightsTour.manual;
@@ -18,6 +20,7 @@ import static src.KnightsTour.auto;
 import static src.KnightsTour.guided;
 import static src.KnightsTour.sm;
 import static src.KnightsTour.generateButtons;
+import static src.KnightsTour.updatePreference;
 
 public class KnightsTourGUI extends JFrame {
 	// Holds all references of each cell/square on the chessboard
@@ -29,6 +32,15 @@ public class KnightsTourGUI extends JFrame {
 	// A label that indicates the current mode of the application
 	public JLabel modeLabel;
 
+	// Buttons for the interface
+	public JButton autoBtn, manualBtn, guidedBtn, resetBtn;
+
+	// Separator to be placed between the change state buttons and reset button
+	public JSeparator verticalLine;
+
+	// Toggles whether or not the order of the knight's moves will be shown
+	JCheckBox orderCheckBox;
+
 	/**
 	 * Generates the application window/frame
 	 */
@@ -36,33 +48,47 @@ public class KnightsTourGUI extends JFrame {
 		chessBoard = new JPanel(new GridLayout(BOARD_SIZE, BOARD_SIZE));
 		
 		JPanel controlPanel = new JPanel(new BorderLayout());
+		JPanel topPanel = new JPanel(new BorderLayout());
 		JPanel btnPanel = new JPanel();
 
 		modeLabel = new JLabel("Mode: Auto", SwingConstants.CENTER);
 
-		JButton autoBtn = new JButton("Auto Tour");
-		autoBtn.setBackground(new Color(84,68,50));
-		autoBtn.setForeground(Color.WHITE);
-		autoBtn.setFocusPainted(false);
+		autoBtn = new InterfaceBtn("Auto Tour");
+		manualBtn = new InterfaceBtn("Manual Tour");
+		guidedBtn = new InterfaceBtn("Guided Tour");
+		resetBtn = new InterfaceBtn("Reset");
+
 		autoBtn.addActionListener(e -> sm.change(auto));
-
-		JButton manualBtn = new JButton("Manual Tour");
-		manualBtn.setBackground(new Color(84,68,50));
-		manualBtn.setForeground(Color.WHITE);
-		manualBtn.setFocusPainted(false);
 		manualBtn.addActionListener(e -> sm.change(manual));
-
-		JButton guidedBtn = new JButton("Guided Tour");
-		guidedBtn.setBackground(new Color(84,68,50));
-		guidedBtn.setForeground(Color.WHITE);
-		guidedBtn.setFocusPainted(false);
 		guidedBtn.addActionListener(e -> sm.change(guided));
+		resetBtn.addActionListener(e -> sm.reset());
+
+		autoBtn.setVisible(false);
+		resetBtn.setVisible(false);
+
+		verticalLine = new JSeparator(SwingConstants.VERTICAL);
+		verticalLine.setPreferredSize(new Dimension(1, 25));
+		verticalLine.setVisible(false);
 
 		btnPanel.add(autoBtn);
 		btnPanel.add(manualBtn);
 		btnPanel.add(guidedBtn);
+		btnPanel.add(verticalLine);
+		btnPanel.add(resetBtn);
 
-		controlPanel.add(modeLabel, BorderLayout.NORTH);
+		orderCheckBox = new JCheckBox("Show Order");
+		orderCheckBox.setHorizontalAlignment(SwingConstants.CENTER);
+		orderCheckBox.setFocusPainted(false);
+		orderCheckBox.addItemListener(e -> updatePreference(e));
+
+		JSeparator horizontal = new JSeparator(SwingConstants.HORIZONTAL);
+		horizontal.setPreferredSize(new Dimension(200, 1));
+
+		topPanel.add(modeLabel, BorderLayout.NORTH);
+		topPanel.add(horizontal);
+		topPanel.add(orderCheckBox, BorderLayout.SOUTH);
+
+		controlPanel.add(topPanel, BorderLayout.NORTH);
 		controlPanel.add(btnPanel);
 
 		add(chessBoard);

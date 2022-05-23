@@ -5,10 +5,10 @@ import static src.KnightsTour.neighborCells;
 import static src.KnightsTour.app;
 import static src.KnightsTour.currentPos;
 import static src.KnightsTour.visitedCells;
-import static src.KnightsTour.resetAll;
 import static src.KnightsTour.resetNeighbors;
 import static src.KnightsTour.moveKnight;
 import static src.KnightsTour.findNeighbors;
+import static src.KnightsTour.showResetBtn;
 
 import src.Cell;
 import javax.swing.JOptionPane;
@@ -16,8 +16,8 @@ import javax.swing.JOptionPane;
 public class ManualState extends BaseState {
     @Override
     public void enter() {
-        resetAll();
         app.modeLabel.setText("Mode: Manual");
+        app.manualBtn.setVisible(false);
     }
 
     @Override
@@ -32,6 +32,8 @@ public class ManualState extends BaseState {
                 return;
             
             resetNeighbors();
+        } else {
+            showResetBtn();
         }
 
         // Update the position of the knight on the chessboard and mark the cell it is on as visited
@@ -61,5 +63,10 @@ public class ManualState extends BaseState {
         }
 
         return true;
+    }
+
+    @Override
+    public void exit() {
+        app.manualBtn.setVisible(true);
     }
 }
