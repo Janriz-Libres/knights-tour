@@ -22,7 +22,7 @@
 - Board size: 8x8 chessboard.
 
 ## Technologies Used
-* [![Java Swing][Java-Swing-logo]][Java-Swing-url]: GUI framework for Java applications
+* [![Java Swing][Java-Swing-logo]][Java-Swing-url]
 
 [Java-Swing-logo]: https://img.shields.io/badge/Java_Swing-007396?logo=java&logoColor=white
 [Java-Swing-url]: https://docs.oracle.com/javase/8/docs/technotes/guides/swing/
